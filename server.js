@@ -23,22 +23,25 @@ const requestQueue = asyncQueue(function(task, callback) {
   var unitCode = queryObject.unitCode;
   var powerState = queryObject.powerState == "true";
 
+  console.log("query: " + request.url);
+
   exec([execPath,
     "--pin", pin,
     systemCode,
     unitCode,
     (powerState ? '1' : '0')
   ].join(' '), function (error, stdout, stderr) {
-    setTimeout(function() {
-      callback();
-      error = error || stderr;
-      if(error) {
-        response.statusCode = 500;
-        response.end("Something went wrong 3: " + error);
-      } else {
-        response.end();
-      }
-    }, 250);
+    //setTimeout(function() {
+    console.log("exec finished: " + stdout + " | " + stderr + " | " + error);
+    callback();
+    error = error || stderr;
+    if(error) {
+      response.statusCode = 500;
+      response.end("Something went wrong 3: " + error);
+    } else {
+      response.end();
+    }
+    //}, 250);
   });
 });
 
