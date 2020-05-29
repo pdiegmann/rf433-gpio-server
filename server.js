@@ -44,12 +44,12 @@ const requestQueue = asyncQueue(function(task, callback) {
 
 const http = require('http')
 
-const requestHandler = (request, response) => {
+const requestHandler = function(request, response) {
   requestQueue.push({ request, response });
 }
 
 const server = http.createServer(requestHandler);
-server.listen(port, (error) => {
+server.listen(port, function(error) {
   if (error) {
     return console.log('something went wrong 1: ', error);
   }
