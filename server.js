@@ -45,7 +45,7 @@ const requestQueue = asyncQueue(function(task, callback) {
 const http = require('http')
 
 const requestHandler = function(request, response) {
-  requestQueue.push({ request, response });
+  requestQueue.push({ request: request, response: response });
 }
 
 const server = http.createServer(requestHandler);
@@ -54,5 +54,5 @@ server.listen(port, function(error) {
     return console.log('something went wrong 1: ', error);
   }
 
-  console.log(`server is listening on ${port}`);
+  console.log("server is listening on " +  port);
 });
