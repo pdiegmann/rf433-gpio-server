@@ -15,22 +15,23 @@ const requestQueue = asyncQueue(function(task, callback) {
   var request = task.request;
   var response = task.response;
 
-  var queryObject = url.parse(request.url,true).query;
+  console.log("task2: " + JSON.stringify(task.request.url));
 
+  var queryObject = url.parse(request.url,true).query;
+  //console.log("queryObject: " + JSON.stringify(queryObject));
   var execPath = queryObject.execPath;
   var pin = queryObject.pin;
   var systemCode = queryObject.systemCode;
   var unitCode = queryObject.unitCode;
   var powerState = queryObject.powerState == "true";
 
-  console.log("query: " + request.url);
+  var execCMD = [execPath,["--pin",pin].join('='),systemCode,unitCode,(powerState ? '1' : '0')].join(' ')
+  //var execCMD = execPath + " " + systemCode + " " + unitCode + " " + (powerState ? '1' : '0')
 
-  exec([execPath,
-    "--pin", pin,
-    systemCode,
-    unitCode,
-    (powerState ? '1' : '0')
-  ].join(' '), function (error, stdout, stderr) {
+  //console.log("query: " + request.url);
+  console.log("exec: " + execCMD);
+
+  exec(execCMD, function (error, stdout, stderr) {
     //setTimeout(function() {
     console.log("exec finished: " + stdout + " | " + stderr + " | " + error);
     callback();
